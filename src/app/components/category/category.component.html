@@ -1,0 +1,80 @@
+<div class="container" [class.blur]="showForm">
+  <h1>Categories</h1> <button class="toggleForm-btn" (click)="toggleForm()">Add New</button>
+  <div class="category-columns" *ngIf="getIncomeCategory().length || getExpenseCategory().length; else noCategory">
+    <div class="table-wrapper" *ngIf="getIncomeCategory().length > 0">
+      <h2>Income</h2>
+      <table class="category-table">
+        <thead>
+          <tr>
+            <th>Categories</th>
+          </tr>
+        </thead>
+        <tbody >
+          <tr *ngFor="let category of getIncomeCategory()">
+            <td>{{ category.name }}
+              <div class="btn-conatiner">
+                <button class="btn btn-sm btn-outline-primary me-2 " (click)="editCategoryById(category)"><i
+                    class="fas fa-edit"></i></button>
+                <button class="btn btn-sm btn-outline-danger" (click)="deleteCategory(category._id)"><i
+                    class="fas fa-trash"></i></button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Expense Categories -->
+    <div class="table-wrapper" *ngIf="getExpenseCategory().length > 0">
+      <h2>Expense</h2>
+      <table class="category-table">
+        <thead>
+          <tr>
+            <th>Categories</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let category of getExpenseCategory()">
+            <td>{{ category.name }}
+              <div class="btn-conatiner">
+                <button class="btn btn-sm btn-outline-primary me-2" (click)="editCategoryById(category)"><i
+                    class="fas fa-edit"></i></button>
+                <button class="btn btn-sm btn-outline-danger" (click)="deleteCategory(category._id)"><i
+                    class="fas fa-trash"></i></button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div> <ng-template #noCategory>
+    <div class="alert-message">No Category found.</div>
+  </ng-template>
+</div>
+
+<!--  Form -->
+<div class="show-form" *ngIf="showForm">
+  <div class="modal-content">
+    <span class="close-button" (click)="closeForm()">Close</span>
+    <section class="form-section">
+      <div class="main-container">
+        <div class="form-container">
+          <h2 class="form-title">Add Category</h2>
+          <form [formGroup]="categoryForm">
+            <input formControlName="name" type="text" placeholder="CATEGORY NAME" />
+            <div class="error" *ngIf="form['name'].invalid && form['name'].touched">
+              <small *ngIf="form['name'].errors?.['required']">Name is required</small>
+            </div>
+            <select formControlName="type">
+              <option value="">Category Type</option>
+              <option *ngFor="let category of  categoryType" [value]="category">{{category}}</option>
+            </select>
+            <button *ngIf="!isEditCategory" class="add-btn" type="submit" (click)="addCategory()"
+              [disabled]="categoryForm.invalid">Add Category</button>
+            <button *ngIf="isEditCategory" class="add-btn" type="submit" (click)="updateCategory()">Update</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

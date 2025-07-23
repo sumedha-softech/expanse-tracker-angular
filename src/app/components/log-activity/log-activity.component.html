@@ -1,0 +1,18 @@
+<div class="activity-container">
+  <h5 class="heading">Recent Activity Logs</h5>
+
+  <div class="log-scroll-container" *ngIf="groupedDates.length; else noLogs">
+    <div *ngFor="let date of groupedDates" class="date-group">
+      <div class="date-label">{{ date | date: 'MMM dd, yyyy' }}</div>
+      <ul class="log-list">
+        <li *ngFor="let log of groupedLogs[date]" class="log-item">
+          <div class="log-time">{{ log.date | date: 'short' }}</div>
+          <div class="log-message">{{ log.message }}</div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <ng-template #noLogs>
+    <div class="alert-message">No logs available.</div>
+  </ng-template>
+</div>

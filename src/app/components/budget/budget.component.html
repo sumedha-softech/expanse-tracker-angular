@@ -1,0 +1,114 @@
+<!-- amount Section -->
+<div class="container" [class.blur]="showForm">
+    <div class="summary-container">
+        <div class="summary-row">
+            <div class="summary-card income">
+                <h4 class="summary-title">Total Income</h4>
+                <p class="summary-value   text-success fw-semibold">{{totalIncome() | currency: 'INR'}}</p>
+            </div>
+            <div class="summary-card expense">
+                <h4 class="summary-title">Total Expense</h4>
+                <p class="summary-value  text-danger fw-semibold">{{totalExpense() | currency : 'INR'}}</p>
+            </div>
+            <div class="summary-card income">
+                <div class="select-date   gap-2">
+                    <button class="btn btn-outline-primary" (click)="previousMonth()"><i
+                            class="fas fa-chevron-left"></i></button>
+                    <input type="month" class="form-control" style="max-width: 180px;" [(ngModel)]="selectMonth"
+                        (change)="onMonthChange()" />
+                    <button class="btn btn-outline-primary" (click)="nextMonth()"><i
+                            class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-lg-6 col-md-12 mb-4" *ngIf="filteredBudgetList.length > 0; else noData">
+            <h4 class="fw-bold mb-3">Available Category Wise Budgets List</h4>
+            <div *ngFor="let categoryBudget of filteredBudgetList" class="card budget-card shadow-sm p-3 mb-3">
+                <div class="budget-items  d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="category-name fw-bold mb-1">{{ getCategoryName(categoryBudget.category) }}</h6>
+                        <small class="amount  d-block">Limit: {{ categoryBudget.limit | currency : 'INR'}}</small>
+                        <small class="amount  d-block">Spent: {{ categoryBudget.spent |currency :'INR' }}</small>
+                        <small class="amount d-block">Remaining: {{ categoryBudget.limit - categoryBudget.spent < 0 ? 0
+                                : categoryBudget.limit - categoryBudget.spent |currency : 'INR' }}</small>
+                    </div>
+                    <span class="date"> {{selectMonth | date: 'MMM YYYY'}}</span>
+                    <div class="btns-box">
+                        <button class="btn btn-sm btn-outline-primary m-2"
+                            (click)="editCategoryBudget(categoryBudget)"><i class="fas fa-edit"></i> </button>
+                        <button class="btn btn-sm btn-outline-danger" (click)="deleteBudget(categoryBudget._id)"> <i
+                                class="fas fa-trash-alt"></i></button>
+                    </div>
+                </div>
+                <div class="progress mt-3">
+                    <div class="progress-bar"
+                        [ngClass]="categoryBudget.spent > categoryBudget.limit ? 'bg-danger' : 'bg-success'"
+                        [style.width.%]="categoryBudget.limit > 0 ? (categoryBudget.spent / categoryBudget.limit) * 100 > 100 ? 100 : (categoryBudget.spent / categoryBudget.limit) * 100 : 0">
+                    </div>
+                </div>
+                <small *ngIf="categoryBudget.spent > categoryBudget.limit"
+                    class="text-danger mt-2 d-block fw-semibold">Limit Exceeded</small>
+            </div>
+        </div>
+        <ng-template #noData>
+            <div class="alert-message">No data available for selected month.</div>
+        </ng-template>
+        <!-- Available Categories -->
+        <div class="col-lg-6 col-md-12 mb-4">
+            <div *ngIf="getExpenseCategory().length > 0; else noCategory">
+                <h4 class="fw-bold mb-3  mt-3">Available Expense Categories</h4>
+                <div class="table-responsive">
+                    <table class="table table-bordered align-middle"  *ngIf="availbleCategoryList.length > 0; else nodata">
+                        <thead class="table-light">
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let category of  availbleCategoryList">
+                                <td>{{ category.name }}</td>
+                                <td> <button class="btn btn-sm btn-outline-primary" (click)=" toggleForm(category)">Set
+                                        Budget</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                       <ng-template #nodata>
+                <div class="alert alert-warning mt-3">No more categories Available .</div>
+            </ng-template>
+                </div>
+            </div>
+            <ng-template #noCategory>
+                <div class="alert alert-warning mt-3">No categories found.</div>
+            </ng-template>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+<!-- Form -->
+<div class="form-overlay" *ngIf="showForm">
+    <div class="form-popup p-4 shadow">
+        <h5 class="form-title text-center mb-3">Set Category Budget Limit</h5>
+        <form [formGroup]="addBudgetForm">
+            <div class="mb-2 text-center">
+                <span class="fw-bold fs-5">Category: {{ selectedCategoryName }}</span>
+            </div>
+            <input class="form-control mb-2" formControlName="limit" type="number" placeholder="ENTER BUDGET LIMIT" />
+            <div class="datetime-container">
+                <div class="date-display">Month: {{ formattedDate }} </div>
+            </div>
+
+            <div class="d-flex justify-content-between mt-3">
+                <button class="btn btn-outline-danger" type="button" (click)="closeForm()">Close</button>
+                <button class="btn btn-primary" type="submit" (click)="addCategoryBudget()">
+                    {{selectedBudgetId ? 'Update' : 'Add Budget'}}</button>
+            </div>
+
+        </form>
+
+    </div>
+</div>

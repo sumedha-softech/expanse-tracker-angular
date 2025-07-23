@@ -1,0 +1,43 @@
+/* sidebar.component.css */
+.sidebar {
+  width: 280px;
+  min-height: 100vh;
+  transition: transform 0.3s ease;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1050;
+  overflow-y: auto;
+}
+
+.sidebar-toggle {
+  z-index: 1100;
+  position: fixed;
+  top: 10px;
+  left: 10px;
+}
+
+.title-container {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  margin: 10px;
+  font-size: 22px;
+  gap: 10px;
+}
+
+.title-container img {
+  width: 40px;
+  height: 40px;
+}
+
+/* Hide sidebar by sliding left (mobile) */
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .sidebar.active {
+    transform: translateX(0);
+  }
+}
