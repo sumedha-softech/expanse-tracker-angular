@@ -1,0 +1,573 @@
+.amount-container {
+  padding: 1rem;
+  margin: 0 auto;
+  max-width: 1200px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 1rem;
+  flex-wrap: nowrap;
+}
+
+.summary-card {
+  flex: 1;
+  min-width: 0;
+  background-color: #f8f9fa;
+  padding: 0.8rem;
+  border-radius: 4px;
+  text-align: center;
+
+}
+
+
+.summary-title {
+  font-size: 1.2rem;
+  color: #001A6E;
+  margin-bottom: 0.4rem;
+}
+
+.summary-value {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .summary-card {
+    padding: 0.6rem;
+  }
+
+  .summary-title {
+    font-size: 0.9rem;
+  }
+
+  .summary-value {
+    font-size: 1rem;
+  }
+}
+
+@media(max-width: 476px) {
+  .summary-card {
+    padding: 0.5rem;
+  }
+
+  .summary-title {
+    font-size: 0.8rem;
+  }
+
+  .summary-value {
+    font-size: 0.65rem;
+  }
+}
+
+/*  */
+
+
+
+
+/*  */
+.date-label {
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin: 0 0 1rem 0;
+  border-left: 5px solid #198754;
+  padding-left: 10px;
+}
+
+.record-card {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+
+.category {
+  font-size: 1rem;
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.amount {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+hr {
+  margin: 1.5rem 0;
+  border-top: 2px solid #dee2e6;
+}
+
+.form-input,
+.note-input,
+.amount-input,
+select {
+  width: 100%;
+  padding: 10px 12px;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.form-input:focus,
+.note-input:focus,
+.amount-input:focus,
+select:focus {
+  border-color: #3f51b5;
+  box-shadow: 0 0 4px rgba(63, 81, 181, 0.3);
+}
+
+
+.add-btn button {
+  width: 100%;
+  max-width: 80px;
+  padding: 5px;
+  color: #FFF;
+  float: right;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+}
+
+.add-record-btn {
+  width: 100%;
+  padding: 10px;
+  color: #FFF;
+  justify-content: center;
+  align-items: center;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  font-weight: 500;
+  font-size: 16px;
+
+}
+
+button[type="submit"]:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+}
+
+/*  */
+.error {
+  color: red;
+  font-weight: 500;
+}
+
+.blur {
+  filter: blur(5px);
+  pointer-events: none;
+  user-select: none;
+}
+
+
+.close-button {
+  position: absolute;
+  font-weight: bold;
+  top: 10px;
+  right: 14px;
+  cursor: pointer;
+  font-size: 16px;
+  color: red;
+}
+
+
+/*  */
+
+.show-form {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #fff;
+
+  border-radius: 12px;
+  padding: 30px;
+  width: 90%;
+  max-width: 700px;
+  position: relative;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.form-section {
+  padding-top: 20px;
+}
+
+.form-title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+
+.type-selection {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 15px;
+}
+
+.type-option {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 500;
+}
+
+.account-category-box {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+.account-box,
+.category-box {
+  flex: 1 1 45%;
+}
+
+#account-name,
+#category-name {
+  font-weight: bold;
+  margin: 5px;
+}
+
+.account-box label,
+.category-box label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="number"],
+select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+
+.note-input {
+  margin-top: 10px;
+
+}
+
+.text {
+  font-weight: 500;
+}
+
+.add-btn {
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+
+}
+
+.recordlist-btn {
+  all: unset;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-right: 5px;
+}
+
+
+.record-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.record-right {
+  font-size: 16px;
+}
+
+/* display single record */
+/* Delete button */
+.delete-btn {
+  background-color: rgba(255, 0, 0);
+  color: white;
+}
+
+/* Update button */
+.update-btn {
+  background-color: #007bff;
+  color: white;
+}
+
+/* Overlay background */
+.show-record {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal content */
+.record-content {
+  background: #fff;
+  padding: 30px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  position: relative;
+
+}
+
+
+/* Buttons */
+.btn-container {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.btn-container button {
+  padding: 8px 18px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.delete-btn {
+  background-color: #bd1f13;
+  color: white;
+}
+
+
+.update-btn {
+  background-color: #007bff;
+  color: white;
+}
+
+
+/* Selected record display */
+.single-record {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 10px;
+  border: 1px solid #ddd;
+}
+
+.record-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px;
+}
+
+.detail-item label {
+  font-weight: 600;
+  color: #555;
+}
+
+.detail-item span {
+  font-size: 18px;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.date-picker {
+  margin-top: 10px;
+}
+
+.formatted-date {
+  font-size: 0.9rem;
+  color: #555;
+  font-style: italic;
+  margin-top: 4px;
+}
+
+.date-display {
+  cursor: pointer;
+  font-size: 16px;
+  color: #444;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  display: inline-block;
+  transition: all 0.2s ease;
+}
+
+
+.datetime-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+
+  mat-form-field {
+    width: 250px;
+  }
+
+  .time-picker {
+    display: flex;
+    flex-direction: column;
+
+    label {
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+
+    input[type="time"] {
+      padding: 6px 12px;
+      font-size: 16px;
+      width: 140px;
+    }
+  }
+}
+
+.display-output {
+  font-size: 18px;
+  color: #333;
+  margin-top: 1rem;
+}
+
+input.mat-input-element {
+  font-size: 16px;
+  color: #444;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+
+.time-field {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.time-field input[type="time"] {
+  padding: 8px 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  color: #444;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.alert-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #0c5460;
+  background-color: #d1ecf1;
+  border: 1px solid #bee5eb;
+  border-radius: 6px;
+  padding: 20px;
+  margin-top: 30px;
+}
+
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.account-box option {
+  font-weight: 400;
+
+}
+
+@media (max-width: 600px) {
+  .type-selection {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .account-category-box {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .type-selection {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .account-category-box {
+    flex-direction: column;
+  }
+
+  .add-btn {
+
+    padding: 0.2px;
+  }
+
+  .alert-message {
+    font-size: 0.90rem;
+  }
+
+  .recordlist-btn {
+    font-size: 0.90rem;
+    font-weight: 500;
+  
+  }
+
+
+
+
+
+}

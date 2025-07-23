@@ -1,0 +1,382 @@
+.summary-container {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.top-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+/* ---------- Circle Chart ---------- */
+.circle-wrapper {
+  width: 220px;
+  height: 220px;
+  position: relative;
+}
+
+.circle {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: conic-gradient(#eee 0deg, #eee 360deg); /* fallback */
+}
+
+.circle-center {
+  background-color: #fff;
+  border-radius: 50%;
+  width: 130px;
+  height: 130px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 18px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  position: absolute;
+}
+
+
+.legend {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 300px;
+}
+
+.legend h2 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  color: #444;
+}
+
+.color-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+}
+
+
+.label  {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.percent {
+  margin-left: auto;
+  color: #666;
+  font-size: 13px;
+}
+
+/* ---------- Income Details ---------- */
+.details {
+  background: #fff;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.details h3 {
+  margin-bottom: 20px;
+  font-size: 20px;
+  color: #222;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 6px;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 10px;
+  border-radius: 10px;
+  background-color: #f4f6f8;
+  margin-bottom: 12px;
+  transition: background-color 0.3s ease;
+}
+
+.detail-item:hover {
+  background-color: #eaeef2;
+}
+
+.category-name {
+  font-weight: 600;
+  color: #222526;
+  font-size: 16px;
+  
+  
+}
+
+.right {
+  text-align: right;
+  font-weight: 600;
+  color: #222;
+  font-size: 16px;
+}
+
+.right .percent {
+  display: block;
+  font-size: 14px;
+  font-weight: normal;
+  color: #555;
+  margin-top: 4px;
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  font-size: 16px;
+  padding-top: 10px;
+  border-top: 1px solid #ccc;
+  margin-top: 20px;
+}
+
+/*  */
+.toggle-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+/* Toggle Buttons */
+.toggle-buttons button {
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  border: 1px solid #007bff;
+  background-color: white;
+  color: #007bff;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.toggle-buttons button.active {
+  background-color: #007bff;
+  color: white;
+}
+
+/* Calendar Buttons Layout */
+#calendar-btn {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 0.5rem;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+  margin-top: 0.5rem;
+}
+
+/* Calendar Button Styles */
+#calendar-btn button {
+  width: 100%;
+}
+
+#calendar-btn input[type="month"] {
+  width: 100%;
+  text-align: center;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 576px) {
+  #calendar-btn {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  #calendar-btn button,
+  #calendar-btn input[type="month"] {
+    width: 100%;
+  }
+}
+
+
+
+#totalAmount {
+  font-size: 18px;
+  font-weight: bold;
+
+}
+
+#calendar-btn {
+ float: right;
+ margin: auto;
+}
+
+.alert-info {
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+
+}
+
+.alert-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #0c5460;
+  background-color: #d1ecf1;
+  border: 1px solid #bee5eb;
+  border-radius: 6px;
+  padding: 20px;
+  margin-top: 30px;
+}
+
+.chart-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+}
+
+.chart-container {
+  width: 100%;
+  
+ aspect-ratio: 20/10;  
+  background-color: #ffffff;
+  padding: 15px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Mobile improvements */
+@media (max-width: 576px) {
+  .chart-container {
+    height: 300px;
+    padding: 10px;
+  }
+}
+
+.custom-table {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  background-color: #fff;
+}
+
+
+.custom-table th {
+  color: #222522 !important;
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  padding: 1rem;
+}
+
+.custom-table td {
+  padding: 0.75rem;
+  vertical-align: middle;
+  font-size: 1rem;
+  background-color: #fdfdfe;
+}
+
+
+/* Account column specific */
+.custom-table .account-name {
+  color: #222526;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .custom-table th,
+  .custom-table td {
+    font-size: 0.875rem;
+    padding: 0.5rem;
+  }
+
+  h4 {
+    font-size: 1.2rem;
+  }
+}
+
+
+/* ---------- Responsive Design ---------- */
+@media (max-width: 600px) {
+.circle-wrapper {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin: auto;
+}
+
+.circle {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.circle-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-weight: bold;
+  color: #333;
+  pointer-events: none;
+}
+
+.click-segment {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  top: 0;
+  left: 50%;
+  transform-origin: left center;
+  background: transparent;
+}
+
+  .circle-wrapper {
+    width: 180px;
+    height: 180px;
+  }
+
+  .circle-center {
+    width: 110px;
+    height: 110px;
+    font-size: 16px;
+  }
+
+  .legend {
+    align-items: center;
+    text-align: center;
+  }
+
+  .detail-item {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 12px;
+  }
+
+  .right {
+    text-align: left;
+    margin-top: 6px;
+  }
+}
+

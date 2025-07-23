@@ -1,0 +1,119 @@
+<div class="toggle-buttons">
+  <button (click)="activeView = 'income'" [class.active]="activeView === 'income'">Income Overview</button>
+  <button (click)="activeView = 'expense'" [class.active]="activeView === 'expense'">Expense Overview</button>
+  <button (click)="showAccountChart()" [class.active]="activeView === 'account'">Account Analysis</button>
+
+  <div class="d-flex gap-2" id="calendar-btn">
+    <button class="btn btn-outline-primary" (click)="previousMonth()"><i class="fas fa-chevron-left"></i></button>
+    <input type="month" class="form-control" style="max-width: 180px;" [(ngModel)]="selectMonth"
+      (change)="onMonthChange()" />
+    <button class="btn btn-outline-primary" (click)="nextMonth()"> <i class="fas fa-chevron-right"></i></button>
+  </div>
+</div>
+
+<div *ngIf="filteredRecordList.length === 0" class="alert-message">
+  No transactions found in this month.
+</div>
+<div *ngIf="filteredRecordList.length > 0 && ((activeView === 'income' && getIncomePercent.length === 0) ||
+      (activeView === 'expense' && getExpensePercent.length === 0))" class="alert-message">
+  No transaction found in this month.
+</div>
+<!--Only show if selected type has data -->
+<div class="summary-container" *ngIf="filteredRecordList.length > 0 && ((activeView === 'income' && getIncomePercent.length > 0) ||
+        (activeView === 'expense' && getExpensePercent.length > 0))">
+
+  <div class="top-section">
+    <div class="circle-wrapper">
+      <div class="circle" [style.background]="generateConicGradient()">
+        <div class="circle-center">
+          {{ activeView === 'income' ? 'Incomes' : 'Expenses' }}
+        </div>
+      </div>
+    </div>
+    <div class="legend">
+      <h2>Categories</h2>
+      <div class="legend-item" *ngFor="let item of (activeView === 'income' ? getIncomePercent : getExpensePercent)">
+        <span class="color-dot" [style.background]="item.color"></span>
+        <span class="label">{{ item.category }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="details">
+    <h3>{{ activeView === 'income' ? 'Income' : 'Expense' }} Details</h3>
+    <div class="detail-item" *ngFor="let item of (activeView === 'income' ? getIncomePercent : getExpensePercent)">
+      <div class="left">
+        <span class="category-name">{{ item.category }}</span>
+      </div>
+      <div class="right">
+        {{ item.amount | currency: 'INR' }} ({{ item.percent }}%)
+      </div>
+    </div>
+    <div class="total-row">
+      <span>Total Amount: </span>
+      <div class="text-primary fw-semibold" id="totalAmount">
+        {{ (activeView === 'income' ? totalIncome : totalExpense) | currency : 'INR' }}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Chart Section -->
+<div class="container-fluid px-2 py-3">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-10 chart-wrapper">
+      <div class="chart-container" *ngIf="activeView === 'account' &&  budgetData.length">
+        <ngx-charts-bar-vertical-2d 
+          [view]="view"
+          [scheme]="colorScheme"
+          [results]=" budgetData"
+          [gradient]="gradient"
+          [xAxis]="showXAxis"
+          [yAxis]="showYAxis"
+          [legend]="showLegend"
+          [showXAxisLabel]="showXAxisLabel"
+          [showYAxisLabel]="showYAxisLabel"
+          [xAxisLabel]="xAxisLabel"
+          [yAxisLabel]="yAxisLabel"
+          (select)="onSelect($event)">
+        </ngx-charts-bar-vertical-2d>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="container mt-4" *ngIf="activeView == 'account' &&  budgetData.length > 0">
+  <h4 class="text-center mb-4  fw-bold">Income & Expense Summary</h4>
+  <div class="table-responsive">
+    <table class="table table-striped table-bordered custom-table align-middle text-center">
+      <thead class="bg-gradient text-white">
+        <tr>
+          <th>Account</th>
+          <th>Income</th>
+          <th>Expense</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let acc of accountIncomeExpenseData">
+          <td class="account-name fw-semibold">{{ acc.accountName }}</td>
+          <td class="text-amount">{{ acc.income | currency: 'INR' }}</td>
+          <td class="text-amount">{{ acc.expense | currency: 'INR' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- No Data Message -->
+  <div *ngIf="! budgetData.length" class="alert-message">
+    No data available for selected month.
+  </div>
+
+
+</div>
+
+
+

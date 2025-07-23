@@ -1,0 +1,135 @@
+
+
+<!--  Record Data section -->
+<div class="container " [class.blur]="showForm">
+<ng-container>
+    <div class="amount-container">
+    <div class="summary-row">
+        <div class="summary-card income">
+            <h4 class="summary-title">Total Income</h4>
+            <p class="summary-value   text-success ">{{ totalIncome | currency: 'INR' }}</p>
+        </div>
+        <div class="summary-card expense">
+            <h4 class="summary-title">Total Expense</h4>
+            <p class="summary-value  text-danger">{{ totalExpense | currency: 'INR' }}</p>
+        </div>
+        <div class="summary-card balance">
+            <h4 class="summary-title">Total Balance</h4>
+            <p class="summary-value   text-primary ">{{ totalAmount | currency: 'INR' }}</p>
+        </div>
+    </div>
+</div>
+</ng-container>
+    <div class="add-btn d-flex justify-content-between align-items-center flex-wrap gap-3 my-3">
+        <button class="btn btn-success" (click)="toggleForm()">Add New</button>
+
+        <div class="d-flex align-items-center gap-2">
+            <button class="btn btn-outline-primary" (click)="previousMonth()"><i
+                    class="fas fa-chevron-left"></i></button>
+            <input type="month" class="form-control" style="max-width: 140px;" [(ngModel)]="selectMonth"
+                (change)="onMonthChange()" />
+            <button class="btn btn-outline-primary" (click)="nextMonth()"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </div>
+
+    <div *ngIf="groupedDates.length; else noRecords">
+        <div *ngFor="let date of groupedDates">
+            <div class="date-label mt-3 mb-2 fw-bold text-primary">
+                {{ date | date: 'MMM dd, yyyy' }}
+            </div>
+            <div *ngFor="let record of groupedTransactionRecords[date]" class="mb-3">
+                <div
+                    class="record-card d-flex justify-content-between align-items-center mb-2 mt-2 p-2 border rounded shadow-sm">
+                    <a class="recordlist-btn">
+                        <div>
+                            <div class="account fw-bold">{{ getAccountName(record.account) }}</div>
+                            <div class="category ">{{ record.category ? getCategoryName(record.category) :
+                                record.addNote }}</div>
+                        </div>
+                        <span
+                            [ngClass]="record.type === 'income'  ? ' text-success fw-semibold' : record.type === 'expense' ? ' text-danger fw-semibold': record.type === 'transfer' ? 'text-primary fw-semibold' : '' ">
+                            {{ record.amount | currency : 'INR'}}
+                        </span>
+                    </a>
+                    <div class="d-flex justify-content-end gap-2">
+                        <button class="btn btn-sm btn-outline-primary"
+                            (click)="record.isInitialEntry ? editAccountRecord(record): record.isTransfer ? editTransferRecord(record) : editRecord(record)"><i
+                                class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" (click)="deleteRecord(record._id)"> <i
+                                class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ng-template #noRecords>
+        <div class="alert-message">No Transaction Record found in this Month.</div>
+    </ng-template>
+
+</div>
+<!-- form -->
+<div class="show-form" *ngIf="showForm">
+    <div class="modal-content">
+        <span class="close-button" (click)="closeForm()">Close</span>
+        <section class="form-section">
+            <div class="main-container">
+                <div class="form-container">
+                    <h2 class="form-title">Add Record</h2>
+                    <form [formGroup]="recordListForm">
+                        <div class="type-selection">
+                            <label *ngFor="let type of categoryType" class="type-option">
+                                <input type="radio" formControlName="type" [value]="type" (change)="onTypeChange()" />
+                                {{ type}}
+                            </label>
+                        </div>
+                        <!-- Account and Category Selection -->
+                        <div class="account-category-box">
+                            <div class="account-box">
+                                <label>Account</label>
+                                <select formControlName="account">
+                                    <option value="">Select Account</option>
+                                    <option *ngFor="let account of accountList" [value]="account._id">
+                                        {{ account.name }} - {{ account.amount | currency : 'INR' }}
+                                    </option>
+                                </select>
+                                <div class="error" *ngIf="form['account'].invalid && form['account'].touched">
+                                    <div *ngIf="form['account'].errors?.['required']">Select an Account</div>
+                                </div>
+                            </div>
+                            <div class="category-box">
+                                <label>Category</label>
+                                <select formControlName="category">
+                                    <option value="">Select Category</option>
+                                    <option *ngFor="let category of filteredCategoryList" [value]="category._id">
+                                        {{ category.name }}
+                                    </option>
+                                </select>
+                                <div class="error" *ngIf="form['category'].invalid && form['category'].touched">
+                                    <span *ngIf="form['category'].errors?.['required']">Category is required</span>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="number" formControlName="amount" placeholder="Amount" class="amount-input" />
+                        <input type="text" formControlName="addNote" placeholder="Add Note..." class="note-input" />
+                        <!-- Date  -->
+                        <div class="datetime-container">
+                            <div class="date-display" (click)="picker.open()"> {{ formattedDate }}
+                            </div>
+                                <input matInput [matDatepicker]="picker" (dateChange)="onSelectedDate($event)" [value]="selectedDate" hidden>
+                                <mat-datepicker #picker></mat-datepicker>
+                            <div class="time-field">
+                                <input type="time" (change)="selectedTime($event)"[value]="getTimeValue(selectedDate)">
+                            </div>
+                        </div>
+                        <button *ngIf="!isEditRecord" class="add-record-btn" type="submit" (click)="addNewRecord()">Add
+                            Record</button>
+                        <button *ngIf="isEditRecord" class="add-record-btn" type="submit"
+                            (click)="updateRecord()">Update Record</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
