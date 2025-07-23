@@ -37,7 +37,7 @@
             <div class="date-label mt-3 mb-2 fw-bold text-primary">
                 {{ date | date: 'MMM dd, yyyy' }}
             </div>
-            <div *ngFor="let record of groupedTransactionRecords[date]" class="mb-3">
+            <div *ngFor="let record of  transactionRecords[date]" class="mb-3">
                 <div
                     class="record-card d-flex justify-content-between align-items-center mb-2 mt-2 p-2 border rounded shadow-sm">
                     <a class="recordlist-btn">
