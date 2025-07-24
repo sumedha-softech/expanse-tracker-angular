@@ -21,11 +21,10 @@
                 </div>
             </div>
         </div>
-
     </div>
     <div class="row">
         <div class="col-lg-6 col-md-12 mb-4" *ngIf="filteredBudgetList.length > 0; else noData">
-            <h4 class="fw-bold mb-3">Available Category Wise Budgets List</h4>
+            <h4 class="fw-bold mb-3">Category Wise Budgets List {{selectMonth | date : 'MMM YYYY'}} </h4>
             <div *ngFor="let categoryBudget of filteredBudgetList" class="card budget-card shadow-sm p-3 mb-3">
                 <div class="budget-items  d-flex justify-content-between align-items-center">
                     <div>

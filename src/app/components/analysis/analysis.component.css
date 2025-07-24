@@ -263,13 +263,6 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-/* Mobile improvements */
-@media (max-width: 576px) {
-  .chart-container {
-    height: 300px;
-    padding: 10px;
-  }
-}
 
 .custom-table {
   border-radius: 12px;

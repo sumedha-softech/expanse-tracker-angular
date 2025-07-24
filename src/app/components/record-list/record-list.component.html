@@ -26,7 +26,7 @@
         <div class="d-flex align-items-center gap-2">
             <button class="btn btn-outline-primary" (click)="previousMonth()"><i
                     class="fas fa-chevron-left"></i></button>
-            <input type="month" class="form-control" style="max-width: 140px;" [(ngModel)]="selectMonth"
+            <input type="month" class="form-control"  [(ngModel)]="selectMonth"
                 (change)="onMonthChange()" />
             <button class="btn btn-outline-primary" (click)="nextMonth()"><i class="fas fa-chevron-right"></i></button>
         </div>
@@ -37,7 +37,7 @@
             <div class="date-label mt-3 mb-2 fw-bold text-primary">
                 {{ date | date: 'MMM dd, yyyy' }}
             </div>
-            <div *ngFor="let record of groupedTransactionRecords[date]" class="mb-3">
+            <div *ngFor="let record of  transactionRecords[date]" class="mb-3">
                 <div
                     class="record-card d-flex justify-content-between align-items-center mb-2 mt-2 p-2 border rounded shadow-sm">
                     <a class="recordlist-btn">
@@ -91,7 +91,7 @@
                                 <select formControlName="account">
                                     <option value="">Select Account</option>
                                     <option *ngFor="let account of accountList" [value]="account._id">
-                                        {{ account.name }} - {{ account.amount | currency : 'INR' }}
+                                        {{ account.name }} : {{ account.amount | currency : 'INR' }}
                                     </option>
                                 </select>
                                 <div class="error" *ngIf="form['account'].invalid && form['account'].touched">

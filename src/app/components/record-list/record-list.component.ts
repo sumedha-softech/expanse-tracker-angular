@@ -12,13 +12,15 @@ import { Router } from '@angular/router';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatTimepickerModule } from '@angular/material/timepicker';
+import {MatMenuModule} from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
 
 
 
 
 @Component({
   selector: 'app-record-list',
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatDatepickerModule, MatFormFieldModule, MatTimepickerModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule,MatDatepickerModule, MatIconModule,MatFormFieldModule,MatMenuModule, MatTimepickerModule],
   templateUrl: './record-list.component.html',
   styleUrl: './record-list.component.css',
 
@@ -131,7 +133,7 @@ export class RecordListComponent implements OnInit {
       },
       error: (error) => {
         console.error(error);
-        this.showError('Failed to Fatch Transaction Record')
+        this.showError('No transaction found')
       }
     });
   }
@@ -361,7 +363,7 @@ export class RecordListComponent implements OnInit {
       }
     })
   }
-
+ 
 
   get form() {
     return this.recordListForm.controls;

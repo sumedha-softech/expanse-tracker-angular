@@ -1,28 +1,34 @@
 
+<ng-container class="container my-4">
+   <h2>Accounts</h2>
+      <div class="btn-conatiner ">
+        <button class="btn btn-primary" (click)="amountTransferForm()">Transfer</button>
+        <button class="btn btn-primary" (click)="toggleForm()">New Account</button>
+      </div>
+</ng-container>
+
 <div class="container my-4" [class.blur]="showForm">
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <h2>Accounts</h2>
-        <button class="btn btn-primary" (click)="amountTransferForm()">Transfer Amount</button>
-    <button class="btn btn-primary" (click)="toggleForm()">Add New Account</button>
-  </div>
   <div class="row" *ngIf="accountList.length else nodata">
     <div class="col-md-4 mb-4" *ngFor="let account of accountList">
       <div class="card h-100 shadow-sm border-0">
         <div class="card-body">
           <h5 class="card-title">{{ account.name }}</h5>
           <p class="card-text">Balance: <span class="span-amount"
-              [ngClass]="{'text-success' : account.amount >= 0 , 'text-danger' : account.amount < 0}">{{ account.amount | currency :'INR'}} </span>
+              [ngClass]="{'text-success' : account.amount >= 0 , 'text-danger' : account.amount < 0}">{{ account.amount
+              | currency :'INR'}} </span>
           </p>
           <div class="d-flex justify-content-end gap-2">
-            <button class="btn btn-sm btn-outline-primary" (click)="editAccount(account)"><i class="fas fa-edit"></i> </button>
-            <button class="btn btn-sm btn-outline-danger" (click)="deleteAccount(account._id)"><i class="fas fa-trash-alt"></i></button>
+            <button class="btn btn-sm btn-outline-primary" (click)="editAccount(account)"><i class="fas fa-edit"></i>
+            </button>
+            <button class="btn btn-sm btn-outline-danger" (click)="deleteAccount(account._id)"><i
+                class="fas fa-trash-alt"></i></button>
           </div>
         </div>
       </div>
     </div>
   </div>
-    <ng-template #nodata>
-        <div class="alert-message">No Account found.</div>
+  <ng-template #nodata>
+    <div class="alert-message">No Account found.</div>
   </ng-template>
 </div>
 
@@ -38,8 +44,10 @@
           <form [formGroup]="addAccountForm">
             <input formControlName="name" type="text" placeholder="ACCOUNT NAME" />
             <input formControlName="amount" type="number" placeholder="AMOUNT" />
-              <button *ngIf="!isEditAccount && !recordId" class="add-btn" type="submit" [disabled]="addAccountForm.invalid" (click)="addNewAccount()">Add Account</button>
-              <button *ngIf="isEditAccount" class="add-btn" type="submit" [disabled]="addAccountForm.invalid" (click)="updateAccount()">Update Account</button>
+            <button *ngIf="!isEditAccount && !recordId" class="add-btn" type="submit"
+              [disabled]="addAccountForm.invalid" (click)="addNewAccount()">Add Account</button>
+            <button *ngIf="isEditAccount" class="add-btn" type="submit" [disabled]="addAccountForm.invalid"
+              (click)="updateAccount()">Update Account</button>
           </form>
         </div>
       </div>
@@ -62,10 +70,11 @@
               <select class="form-select" formControlName="fromAccountId">
                 <option value="" disabled selected>Select From Account</option>
                 <option *ngFor="let account of accountList" [value]="account._id">
-                  {{ account.name }} {{account.amount | currency : 'INR'  }}
+                  {{ account.name }} {{account.amount | currency : 'INR' }}
                 </option>
               </select>
-              <div class="error" *ngIf="transactionForm.get('fromAccountId')?.touched && transactionForm.get('fromAccountId')?.invalid">
+              <div class="error"
+                *ngIf="transactionForm.get('fromAccountId')?.touched && transactionForm.get('fromAccountId')?.invalid">
                 Please select a account.
               </div>
             </div>
@@ -73,11 +82,13 @@
               <label for="toAccountId" class="form-label">To Account</label>
               <select class="form-select" formControlName="toAccountId">
                 <option value="" disabled selected>Select To Account</option>
-                <option *ngFor="let account of accountList" [value]="account._id" [disabled]="account._id === transactionForm.get('fromAccountId')?.value">
-                  {{ account.name }}  {{account.amount | currency: 'INR'  }}
+                <option *ngFor="let account of accountList" [value]="account._id"
+                  [disabled]="account._id === transactionForm.get('fromAccountId')?.value">
+                  {{ account.name }} {{account.amount | currency: 'INR' }}
                 </option>
               </select>
-              <div class="error" *ngIf="transactionForm.get('toAccountId')?.touched &&  transactionForm.get('toAccountId')?.invalid">
+              <div class="error"
+                *ngIf="transactionForm.get('toAccountId')?.touched &&  transactionForm.get('toAccountId')?.invalid">
                 Please select a destination account.
               </div>
             </div>
@@ -85,9 +96,12 @@
               <label for="amount" class="form-label">Amount</label>
               <input type="number" class="form-control" formControlName="amount"
                 placeholder="Enter amount to transfer" />
-              <div class="error" *ngIf="transactionForm.get('amount')?.touched && transactionForm.get('amount')?.invalid"> Please enter a valid amount. </div>
+              <div class="error"
+                *ngIf="transactionForm.get('amount')?.touched && transactionForm.get('amount')?.invalid"> Please enter a
+                valid amount. </div>
             </div>
-            <button class="btn btn-primary" type="submit" [disabled]="transactionForm.invalid" (click)="amountTransfer()">{{recordId ? 'update Transfer': 'Transfer Amount'}}</button>
+            <button class="btn btn-primary" type="submit" [disabled]="transactionForm.invalid"
+              (click)="amountTransfer()">{{recordId ? 'update Transfer': 'Transfer Amount'}}</button>
 
           </form>
         </div>
@@ -95,4 +109,3 @@
     </section>
   </div>
 </div>
-

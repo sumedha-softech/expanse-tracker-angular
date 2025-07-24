@@ -12,7 +12,8 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 export class SidebarComponent {
 
   isSidebarVisible: boolean = false;
+
   toggleSidebar() {
- this.isSidebarVisible = !this.isSidebarVisible;
+   this.isSidebarVisible = !this.isSidebarVisible;
   }
 }
