@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { RecordList } from "../models/recordlist.model";
+import { environment } from "../../environments/environment.prod";
 
 @Injectable({
     providedIn: 'root'
@@ -9,7 +10,7 @@ import { RecordList } from "../models/recordlist.model";
 
 export class RecordListService {
 
-    private apiurl = 'http://localhost:3000/api/record/'
+    private apiurl = `${environment.apiUrl}/record/`
     constructor(private http: HttpClient) { }
 
 

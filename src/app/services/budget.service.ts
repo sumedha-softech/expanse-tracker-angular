@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, retry } from "rxjs";
+import { environment } from "../../environments/environment.prod";
 
 @Injectable({
     providedIn: 'root'
@@ -8,7 +9,7 @@ import { Observable, retry } from "rxjs";
 
 export class BudgetService {
 
-    private apiUrl = 'http://localhost:3000/api/budget/'
+    private apiUrl = `${environment.apiUrl}/budget/`
     constructor(private http: HttpClient) { }
 
     getAllBudget(): Observable<any[]> {
