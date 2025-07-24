@@ -16,9 +16,7 @@
             "outputPath": "dist/mymoney-app",
             "index": "src/index.html",
             "browser": "src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
             "assets": [
               {
@@ -28,28 +26,25 @@
             ],
             "styles": [
               "src/custom-theme.scss",
-               "node_modules/bootstrap/dist/css/bootstrap.min.css",
-        
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+
               "src/styles.css"
             ],
-            "scripts": [
-              "node_modules/bootstrap/dist/js/bootstrap.min.js"
-            ]
+            "scripts": ["node_modules/bootstrap/dist/js/bootstrap.min.js"]
           },
           "configurations": {
             "production": {
-              "budgets": [
+              "fileReplacements": [
                 {
-                  "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "2MB"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
                 }
               ],
+              "optimization": true,
+              "sourceMap": false,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
               "outputHashing": "all"
             },
             "development": {
@@ -64,10 +59,19 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "mymoney-app:build:production"
+              "buildTarget": "my-angular-app:build:production"
             },
             "development": {
-              "buildTarget": "mymoney-app:build:development"
+              "buildTarget": "my-angular-app:build:development"
+            },
+            "pilot": {
+              "buildTarget": "my-angular-app:build:pilot"
+            },
+            "staging": {
+              "buildTarget": "my-angular-app:build:staging"
+            },
+            "uat": {
+              "buildTarget": "my-angular-app:build:uat"
             }
           },
           "defaultConfiguration": "development"
@@ -78,10 +82,7 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
+            "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "tsconfig.spec.json",
             "assets": [
               {
@@ -93,9 +94,7 @@
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.css"
             ],
-            "scripts": [
-              "node_modules/bootstrap/dist/js/bootstrap.min.js"
-            ]
+            "scripts": ["node_modules/bootstrap/dist/js/bootstrap.min.js"]
           }
         }
       }
