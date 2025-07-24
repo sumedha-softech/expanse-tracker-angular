@@ -5,12 +5,9 @@
         <button class="btn btn-primary" (click)="amountTransferForm()">Transfer</button>
         <button class="btn btn-primary" (click)="toggleForm()">New Account</button>
       </div>
-
 </ng-container>
 
 <div class="container my-4" [class.blur]="showForm">
-
-  
   <div class="row" *ngIf="accountList.length else nodata">
     <div class="col-md-4 mb-4" *ngFor="let account of accountList">
       <div class="card h-100 shadow-sm border-0">

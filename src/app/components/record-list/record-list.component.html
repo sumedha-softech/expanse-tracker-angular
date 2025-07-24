@@ -26,7 +26,7 @@
         <div class="d-flex align-items-center gap-2">
             <button class="btn btn-outline-primary" (click)="previousMonth()"><i
                     class="fas fa-chevron-left"></i></button>
-            <input type="month" class="form-control" style="max-width: 140px;" [(ngModel)]="selectMonth"
+            <input type="month" class="form-control"  [(ngModel)]="selectMonth"
                 (change)="onMonthChange()" />
             <button class="btn btn-outline-primary" (click)="nextMonth()"><i class="fas fa-chevron-right"></i></button>
         </div>
@@ -91,7 +91,7 @@
                                 <select formControlName="account">
                                     <option value="">Select Account</option>
                                     <option *ngFor="let account of accountList" [value]="account._id">
-                                        {{ account.name }} - {{ account.amount | currency : 'INR' }}
+                                        {{ account.name }} : {{ account.amount | currency : 'INR' }}
                                     </option>
                                 </select>
                                 <div class="error" *ngIf="form['account'].invalid && form['account'].touched">

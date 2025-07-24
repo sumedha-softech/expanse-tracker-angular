@@ -105,7 +105,7 @@ export class AccountComponent implements OnInit {
       },
       error: (error) => {
         console.error(error);
-        this.showError('Failed to Fatch Accounts...');
+        this.showError('No Account Found...');
       }
     });
   }
@@ -124,7 +124,7 @@ export class AccountComponent implements OnInit {
       },
       error: (error) => {
         console.log(error);
-        this.showError('Add Account Failed! please try again')
+        this.showError('Add Account Failed!')
       }
     })
   }

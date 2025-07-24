@@ -22,7 +22,7 @@ h2 {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-  justify-content: center;
+  justify-content: space-evenly;
   margin-top: 1rem;
 }
 
@@ -65,14 +65,21 @@ h2 {
   justify-content: flex-end;
 }
 
-/* No data alert */
 .alert-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
-  padding: 1rem;
-  background: #ffe4e4;
-  color: #a00;
-  border-radius: 8px;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #0c5460;
+  background-color: #d1ecf1;
+  border: 1px solid #bee5eb;
+  border-radius: 6px;
+  padding: 20px;
+  margin-top: 30px;
 }
+
 
 /* Show Form Modal */
 .show-form {

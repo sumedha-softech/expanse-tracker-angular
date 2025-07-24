@@ -97,6 +97,7 @@
   font-size: 1rem;
 }
 
+
 hr {
   margin: 1.5rem 0;
   border-top: 2px solid #dee2e6;
@@ -136,6 +137,25 @@ select:focus {
   border: none;
   border-radius: 5px;
 }
+.menu-trigger-btn {
+  border: none;
+  background: transparent;
+  outline: none;
+  padding: 6px;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+  color: #333;
+}
+
+.menu-trigger-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+}
+
+.menu-trigger-btn i {
+  font-size: 18px;
+}
+
 
 .add-record-btn {
   width: 100%;
@@ -473,7 +493,9 @@ input.mat-input-element {
   transition: all 0.2s ease;
   cursor: pointer;
 }
-
+.form-control {
+  max-width: 140px;
+}
 
 .time-field {
   display: flex;
@@ -534,6 +556,17 @@ input.mat-input-element {
     align-items: flex-start;
     gap: 10px;
   }
+
+  .form-control {
+      display: block;
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 0.8rem;
+    font-weight: 400;
+    line-height: 1.5;
+    max-width: 100px;
+}
+
 
   .account-category-box {
     flex-direction: column;

@@ -27,7 +27,6 @@ interface IncomeExpene {
   styleUrls: ['./analysis.component.css']
 })
 export class AnalysisComponent implements OnInit {
-
   recordList: RecordList[] = [];
   categoryList: Category[] = [];
   accountList: Account[] = [];
@@ -42,8 +41,7 @@ export class AnalysisComponent implements OnInit {
   selectMonthLabel!: string;
   activeView: 'income' | 'expense' | 'account' = 'income';
 
-   budgetData: any[] = [];
-
+  budgetData: any[] = [];
   view: [number, number] = [600, 400];
   showXAxis = true;
   showYAxis = true;
@@ -54,12 +52,23 @@ export class AnalysisComponent implements OnInit {
   xAxisLabel = 'Account';
   yAxisLabel = 'Amount';
   timeline = true;
-
   colorScheme: Color = {
     name: 'custom',
     selectable: true,
     group: ScaleType.Ordinal,
     domain: ['#9370DB', '#FF7F50',]
+  };
+
+
+  pieChartData: any[] = []
+  showLabels = true
+  isDoughnut: boolean = false;
+
+  colorSchemeForPie = {
+    name: 'custom',
+    selectable: true,
+    group: ScaleType.Ordinal,
+    domain: ['']
   };
 
   constructor(
@@ -72,12 +81,12 @@ export class AnalysisComponent implements OnInit {
   ngOnInit(): void {
     const today = new Date();
     this.selectMonth = today.toISOString().slice(0, 7);
-    this.fatchIncomeExpense();
+    this.fatchData();
   }
 
 
   //fatch all data
-  fatchIncomeExpense() {
+  fatchData() {
     this.recordService.getAllRecord().subscribe({
       next: (res: { data: RecordList[] }) => {
         this.recordList = res.data;
@@ -108,7 +117,6 @@ export class AnalysisComponent implements OnInit {
     });
   }
 
-
   //show errormessage
   showError(message: string) {
     this.snackbar.open(message, 'Close', { duration: 2000 });
@@ -125,14 +133,30 @@ export class AnalysisComponent implements OnInit {
     if (this.activeView === 'account') {
       this.updateChartData();
     }
+    this.updatePieChartData()
   }
 
 
+  updatePieChartData() {
+    const transactionData = this.activeView === 'income' ? this.getIncomePercent : this.getExpensePercent;
+    this.pieChartData = transactionData.map(transactionRecord => ({
+      name: transactionRecord.category,
+      value: transactionRecord.amount
+    }));
 
-  //   //calculate income
+    const colors = this.generateColors(transactionData.length)
+    this.colorSchemeForPie = {
+      name: 'custom',
+      selectable: true,
+      group: ScaleType.Ordinal,
+      domain: colors,
+    };
+  }
+
+  //calculate income
   calculateIncome() {
     const income = this.filteredRecordList.filter(transactionRecord => transactionRecord.type === 'income' && transactionRecord.category !== null && transactionRecord.category !== undefined);
-    this.totalIncome = income.reduce((total, transactionRecord) => total+ +transactionRecord.amount, 0);
+    this.totalIncome = income.reduce((total, transactionRecord) => total + +transactionRecord.amount, 0);
     const grouped: { [key: string]: number } = {};
 
     income.forEach(record => {
@@ -150,12 +174,12 @@ export class AnalysisComponent implements OnInit {
       percent: +(amount / this.totalIncome * 100).toFixed(1),
       color: colors[i]
     }));
-    
+
   }
 
   //calculate expense from trasaction
   calculateExpense() {
-    const expense = this.filteredRecordList.filter(transactionRecord=> transactionRecord.type === 'expense');
+    const expense = this.filteredRecordList.filter(transactionRecord => transactionRecord.type === 'expense');
     this.totalExpense = expense.reduce((total, record) => total + +record.amount, 0);
     const grouped: { [key: string]: number } = {};
 
@@ -177,8 +201,6 @@ export class AnalysisComponent implements OnInit {
     }));
   }
 
-
-
   //uodate data in cart
   updateChartData(): void {
     const income = new Map<string, number>();
@@ -187,7 +209,6 @@ export class AnalysisComponent implements OnInit {
       income.set(account._id, 0);
       expense.set(account._id, 0);
     });
-
     this.filteredRecordList.forEach(transactionRecord => {
       const amount = +transactionRecord.amount;
       if (transactionRecord.type === 'income') {
@@ -196,15 +217,13 @@ export class AnalysisComponent implements OnInit {
         expense.set(transactionRecord.account, expense.get(transactionRecord.account)! + amount);
       }
     });
-
-    this. budgetData = this.accountList.map(account => ({
+    this.budgetData = this.accountList.map(account => ({
       name: account.name,
       series: [
         { name: 'Income', value: income.get(account._id) || 0 },
         { name: 'Expense', value: expense.get(account._id) || 0 }
       ]
     })).filter(x => x.series.some(y => y.value > 0));
-
     this.accountIncomeExpenseData = this.accountList.map(account => ({
       accountName: account.name,
       income: income.get(account._id) || 0,
@@ -212,22 +231,13 @@ export class AnalysisComponent implements OnInit {
     })).filter(record => record.income > 0 || record.expense > 0);
   }
 
-
-
-  showAccountChart() {
-    this.activeView = 'account';
-    this.updateChartData();
-  }
   onSelect(event: any): void {
     console.log('Chart item selected:', event);
   }
 
-
   getCategoryName(id: string): string {
     return this.categoryList.find(category => category._id === id)?.name || 'Unknown';
   }
-
-
 
   previousMonth(): void {
     const date = new Date(this.selectMonth);
@@ -243,7 +253,14 @@ export class AnalysisComponent implements OnInit {
     this.onMonthChange();
   }
 
-
+  showChart(view: 'income' | 'expense' | 'account') {
+    this.activeView = view;
+    if (view === 'account') {
+      this.updateChartData();
+    } else {
+      this.updatePieChartData();
+    }
+  }
   //generate random colors
   generateColors(count: number): string[] {
     const colors: string[] = [];
@@ -253,19 +270,6 @@ export class AnalysisComponent implements OnInit {
     }
     return colors;
   }
-  generateConicGradient(): string {
-    const data = this.activeView === 'income' ? this.getIncomePercent : this.getExpensePercent;
-    let gradient = 'conic-gradient(';
-    let currentAngle = 0;
-    data.forEach((item, index) => {
-      const nextAngle = currentAngle + item.percent * 3.6;
-      gradient += `${item.color} ${currentAngle}deg ${nextAngle}deg`;
-      if (index < data.length - 1) gradient += ', ';
-      currentAngle = nextAngle;
-    });
-    return gradient + ')';
-  }
-
-
 
 }
+

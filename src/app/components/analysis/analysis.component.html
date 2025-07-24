@@ -1,7 +1,8 @@
 <div class="toggle-buttons">
-  <button (click)="activeView = 'income'" [class.active]="activeView === 'income'">Income Overview</button>
-  <button (click)="activeView = 'expense'" [class.active]="activeView === 'expense'">Expense Overview</button>
-  <button (click)="showAccountChart()" [class.active]="activeView === 'account'">Account Analysis</button>
+  <button (click)="showChart('income')" [class.active]="activeView === 'income'">Income Overview</button>
+  <button (click)="showChart('expense')" [class.active]="activeView === 'expense'">Expense Overview</button>
+  <button (click)="showChart('account')" [class.active]="activeView === 'account'">Account Analysis</button>
+
 
   <div class="d-flex gap-2" id="calendar-btn">
     <button class="btn btn-outline-primary" (click)="previousMonth()"><i class="fas fa-chevron-left"></i></button>
@@ -18,27 +19,16 @@
       (activeView === 'expense' && getExpensePercent.length === 0))" class="alert-message">
   No transaction found in this month.
 </div>
-<!--Only show if selected type has data -->
+
+
+<!--show if selected type -->
 <div class="summary-container" *ngIf="filteredRecordList.length > 0 && ((activeView === 'income' && getIncomePercent.length > 0) ||
         (activeView === 'expense' && getExpensePercent.length > 0))">
-
   <div class="top-section">
-    <div class="circle-wrapper">
-      <div class="circle" [style.background]="generateConicGradient()">
-        <div class="circle-center">
-          {{ activeView === 'income' ? 'Incomes' : 'Expenses' }}
-        </div>
-      </div>
-    </div>
-    <div class="legend">
-      <h2>Categories</h2>
-      <div class="legend-item" *ngFor="let item of (activeView === 'income' ? getIncomePercent : getExpensePercent)">
-        <span class="color-dot" [style.background]="item.color"></span>
-        <span class="label">{{ item.category }}</span>
-      </div>
-    </div>
+    <ngx-charts-pie-chart [view]="view" [scheme]="colorSchemeForPie" [results]="pieChartData" [gradient]="gradient"
+      [legend]="showLegend" [labels]="showLabels" (select)="onSelect($event)">
+    </ngx-charts-pie-chart>
   </div>
-
   <div class="details">
     <h3>{{ activeView === 'income' ? 'Income' : 'Expense' }} Details</h3>
     <div class="detail-item" *ngFor="let item of (activeView === 'income' ? getIncomePercent : getExpensePercent)">
@@ -60,30 +50,19 @@
 
 
 <!-- Chart Section -->
-<div class="container-fluid px-2 py-3">
+<div class="container-fluid ">
   <div class="row justify-content-center">
     <div class="col-12 col-lg-10 chart-wrapper">
       <div class="chart-container" *ngIf="activeView === 'account' &&  budgetData.length">
-        <ngx-charts-bar-vertical-2d 
-          [view]="view"
-          [scheme]="colorScheme"
-          [results]=" budgetData"
-          [gradient]="gradient"
-          [xAxis]="showXAxis"
-          [yAxis]="showYAxis"
-          [legend]="showLegend"
-          [showXAxisLabel]="showXAxisLabel"
-          [showYAxisLabel]="showYAxisLabel"
-          [xAxisLabel]="xAxisLabel"
-          [yAxisLabel]="yAxisLabel"
+        <ngx-charts-bar-vertical-2d [view]="view" [scheme]="colorScheme" [results]=" budgetData" [gradient]="gradient"
+          [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel"
+          [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel"
           (select)="onSelect($event)">
         </ngx-charts-bar-vertical-2d>
       </div>
     </div>
   </div>
 </div>
-
-
 
 
 <div class="container mt-4" *ngIf="activeView == 'account' &&  budgetData.length > 0">
@@ -114,6 +93,3 @@
 
 
 </div>
-
-
-
