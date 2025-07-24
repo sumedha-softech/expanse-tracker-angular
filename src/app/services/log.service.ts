@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { Log } from "../models/log.model";
+import { environment } from "../../environments/environment.prod";
 
 
 @Injectable({
@@ -9,7 +10,7 @@ import { Log } from "../models/log.model";
 })
 
 export class LogService {
-   private apiUrl = 'http://localhost:3000/api/log/'
+   private apiUrl = `${environment.apiUrl}/log/`
 
     constructor(private http: HttpClient) {}
 
