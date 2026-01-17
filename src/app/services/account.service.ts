@@ -10,36 +10,36 @@ import { environment } from "../../environments/environment";
 
 export class AccountService {
 
-    private apiUrl = `${environment.apiUrl}/account/`
+    private apiUrl = `${environment.apiUrl}/accounts/`
 
     constructor(private http: HttpClient) { }
 
     getAllAccount(): Observable<{ data: Account[] }> {
-        return this.http.get<{ data: Account[] }>(this.apiUrl + `getAllAccount`)
+        return this.http.get<{ data: Account[] }>(this.apiUrl)
     }
 
-    getAccountById(id: string): Observable<Account> {
-        return this.http.get<Account>(this.apiUrl + `get/${id}`)
+    fetchAccountById(id: string): Observable<Account> {
+        return this.http.get<Account>(this.apiUrl +`/${id}`)
     }
 
     addAccount(account: Account): Observable<Account> {
-        return this.http.post<Account>(this.apiUrl + `addAccount`, account)
+        return this.http.post<Account>(this.apiUrl, account)
     }
 
     deleteAccount(id: string): Observable<Account> {
-        return this.http.delete<Account>(this.apiUrl + `deleteAccount/${id}`)
+        return this.http.delete<Account>(this.apiUrl + `${id}`)
     }
 
     updateAccount(details: any): Observable<Account> {
         return this.http.put<Account>(this.apiUrl + 'updateAccount', details);
     }
-
+    
     amountTransfer(account: Account): Observable<Account> {
-        return this.http.post<Account>(this.apiUrl + `transferAmount`, account)
+        return this.http.post<Account>(this.apiUrl + `transfer`, account)
     }
 
-    updateTransferAmount(details: { fromAccount: string, toAccount: string, amount: number }): Observable<any> {
-        return this.http.put<any>(this.apiUrl + `updateTransferAmount`, details)
+    updateTransferAmount(id: string): Observable<Account> {
+        return this.http.put<Account>(this.apiUrl + `transfer/${id}`, id)
     }
 
 }

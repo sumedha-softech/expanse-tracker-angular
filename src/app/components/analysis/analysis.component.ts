@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RecordListService } from '../../services/recordList.service';
 import { CategoryService } from '../../services/category.service';
 import { AccountService } from '../../services/account.service';
@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { ScaleType } from '@swimlane/ngx-charts';
+import { Subject, takeUntil } from 'rxjs';
 
 interface IncomeExpene {
   category: string;
@@ -26,7 +27,7 @@ interface IncomeExpene {
   templateUrl: './analysis.component.html',
   styleUrls: ['./analysis.component.css']
 })
-export class AnalysisComponent implements OnInit {
+export class AnalysisComponent implements OnInit, OnDestroy {
   recordList: RecordList[] = [];
   categoryList: Category[] = [];
   accountList: Account[] = [];
@@ -34,6 +35,7 @@ export class AnalysisComponent implements OnInit {
   getIncomePercent: IncomeExpene[] = [];
   getExpensePercent: IncomeExpene[] = [];
   accountIncomeExpenseData: any[] = [];
+  private destroy$ = new Subject<void>();
 
   totalIncome = 0;
   totalExpense = 0;
@@ -42,7 +44,8 @@ export class AnalysisComponent implements OnInit {
   activeView: 'income' | 'expense' | 'account' = 'income';
 
   budgetData: any[] = [];
-  view: [number, number] = [600, 400];
+  view: [number, number] = [window.innerWidth < 700 ? 300 : 600, 400];
+
   showXAxis = true;
   showYAxis = true;
   gradient = true;
@@ -58,6 +61,8 @@ export class AnalysisComponent implements OnInit {
     group: ScaleType.Ordinal,
     domain: ['#9370DB', '#FF7F50',]
   };
+
+
 
 
   pieChartData: any[] = []
@@ -87,15 +92,15 @@ export class AnalysisComponent implements OnInit {
 
   //fatch all data
   fatchData() {
-    this.recordService.getAllRecord().subscribe({
+    this.recordService.getAllRecord().pipe(takeUntil(this.destroy$)).subscribe({
       next: (res: { data: RecordList[] }) => {
-        this.recordList = res.data;
-        this.accountService.getAllAccount().subscribe({
+        this.recordList = res?.data ?? [];
+        this.accountService.getAllAccount().pipe(takeUntil(this.destroy$)).subscribe({
           next: (res: { data: Account[] }) => {
-            this.accountList = res.data;
-            this.categoryService.getAllCategory().subscribe({
+            this.accountList = res?.data ?? [];
+            this.categoryService.getAllCategory().pipe(takeUntil(this.destroy$)).subscribe({
               next: (res: { data: Category[] }) => {
-                this.categoryList = res.data;
+                this.categoryList = res?.data ?? [];
                 this.onMonthChange();
               },
               error: (error) => {
@@ -143,7 +148,6 @@ export class AnalysisComponent implements OnInit {
       name: transactionRecord.category,
       value: transactionRecord.amount
     }));
-
     const colors = this.generateColors(transactionData.length)
     this.colorSchemeForPie = {
       name: 'custom',
@@ -158,7 +162,6 @@ export class AnalysisComponent implements OnInit {
     const income = this.filteredRecordList.filter(transactionRecord => transactionRecord.type === 'income' && transactionRecord.category !== null && transactionRecord.category !== undefined);
     this.totalIncome = income.reduce((total, transactionRecord) => total + +transactionRecord.amount, 0);
     const grouped: { [key: string]: number } = {};
-
     income.forEach(record => {
       const categoryName = this.getCategoryName(record.category);
       const amount = Number(record.amount);
@@ -227,7 +230,7 @@ export class AnalysisComponent implements OnInit {
     this.accountIncomeExpenseData = this.accountList.map(account => ({
       accountName: account.name,
       income: income.get(account._id) || 0,
-      expense: expense.get(account._id) || 0
+      expense: expense.get(account._id) || 0,
     })).filter(record => record.income > 0 || record.expense > 0);
   }
 
@@ -252,6 +255,12 @@ export class AnalysisComponent implements OnInit {
     this.selectMonth = date.toISOString().slice(0, 7);
     this.onMonthChange();
   }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
 
   showChart(view: 'income' | 'expense' | 'account') {
     this.activeView = view;

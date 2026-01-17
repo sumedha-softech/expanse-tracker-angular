@@ -1,10 +1,9 @@
-
 <ng-container class="container my-4">
-   <h2>Accounts</h2>
-      <div class="btn-conatiner ">
-        <button class="btn btn-primary" (click)="amountTransferForm()">Transfer</button>
-        <button class="btn btn-primary" (click)="toggleForm()">New Account</button>
-      </div>
+  <h2>Accounts</h2>
+  <div class="btn-container ">
+    <button class="btn btn-primary" (click)="amountTransferForm()">Transfer</button>
+    <button class="btn btn-primary" (click)="toggleForm()">Add New</button>
+  </div>
 </ng-container>
 
 <div class="container my-4" [class.blur]="showForm">
@@ -16,19 +15,18 @@
           <p class="card-text">Balance: <span class="span-amount"
               [ngClass]="{'text-success' : account.amount >= 0 , 'text-danger' : account.amount < 0}">{{ account.amount
               | currency :'INR'}} </span>
-          </p>
-          <div class="d-flex justify-content-end gap-2">
+
             <button class="btn btn-sm btn-outline-primary" (click)="editAccount(account)"><i class="fas fa-edit"></i>
             </button>
-            <button class="btn btn-sm btn-outline-danger" (click)="deleteAccount(account._id)"><i
+            <button class="btn btn-sm btn-outline-danger" (click)="openConfirmDialog(account._id)"><i
                 class="fas fa-trash-alt"></i></button>
-          </div>
+          </p>
         </div>
       </div>
     </div>
   </div>
   <ng-template #nodata>
-    <div class="alert-message">No Account found.</div>
+    <div class="alert-message">No Account Available.</div>
   </ng-template>
 </div>
 
@@ -64,9 +62,8 @@
         <div class="form-container">
           <h2 class="form-title">Transfer Amount</h2>
           <form [formGroup]="transactionForm" class="p-3 border rounded shadow-sm bg-light">
-            <!-- From Account -->
             <div class="mb-3">
-              <label for="fromAccountId" class="form-label">From Account</label>
+              <label class="form-label">From Account</label>
               <select class="form-select" formControlName="fromAccountId">
                 <option value="" disabled selected>Select From Account</option>
                 <option *ngFor="let account of accountList" [value]="account._id">
@@ -79,7 +76,7 @@
               </div>
             </div>
             <div class="mb-3">
-              <label for="toAccountId" class="form-label">To Account</label>
+              <label class="form-label">To Account</label>
               <select class="form-select" formControlName="toAccountId">
                 <option value="" disabled selected>Select To Account</option>
                 <option *ngFor="let account of accountList" [value]="account._id"
@@ -100,9 +97,11 @@
                 *ngIf="transactionForm.get('amount')?.touched && transactionForm.get('amount')?.invalid"> Please enter a
                 valid amount. </div>
             </div>
-            <button class="btn btn-primary" type="submit" [disabled]="transactionForm.invalid"
-              (click)="amountTransfer()">{{recordId ? 'update Transfer': 'Transfer Amount'}}</button>
-
+            <div class="button-wrapper">
+              <button class="btn btn-primary" type="submit" [disabled]="transactionForm.invalid">
+                {{ recordId ? 'Update Transfer' : 'Transfer Amount' }}
+              </button>
+            </div>
           </form>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Account } from '../../models/account.model';
 import { AccountService } from '../../services/account.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -7,6 +7,9 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RecordListService } from '../../services/recordList.service';
 import { RecordList } from '../../models/recordlist.model';
+import { Subject, takeUntil } from 'rxjs';
+import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
@@ -16,7 +19,7 @@ import { RecordList } from '../../models/recordlist.model';
   styleUrl: './account.component.css'
 })
 
-export class AccountComponent implements OnInit {
+export class AccountComponent implements OnInit, OnDestroy {
   accountList: Account[] = [];
   recordList: RecordList[] = []
   addAccountForm: FormGroup;
@@ -26,13 +29,15 @@ export class AccountComponent implements OnInit {
   selectedAccountId: string | null = null;
   isEditAccount: boolean = false;
   accountId!: string;
-  recordId!: string
+  recordId!: string;
+  private destroy$ = new Subject<void>();
 
 
   constructor(private fb: FormBuilder,
     private accountService: AccountService,
     private recordService: RecordListService,
     private snackbar: MatSnackBar,
+    private dialog: MatDialog,
     private route: ActivatedRoute,
     private router: Router) {
     this.addAccountForm = this.fb.group({
@@ -42,15 +47,15 @@ export class AccountComponent implements OnInit {
       this.transactionForm = fb.group({
         fromAccountId: ['', [Validators.required]],
         toAccountId: ['', Validators.required],
-        amount: [null, Validators.required]
+        amount: [null, Validators.required, Validators.min(1)]
       })
   }
 
 
   ngOnInit(): void {
-    this.accountService.getAllAccount().subscribe({
+    this.accountService.getAllAccount().pipe(takeUntil(this.destroy$)).subscribe({
       next: (res: { data: Account[] }) => {
-        this.accountList = res.data;
+        this.accountList = res?.data ?? [];
         this.route.queryParams.subscribe(params => {
           this.accountId = params['accountId'];
           this.recordId = params['recordId'];
@@ -82,8 +87,9 @@ export class AccountComponent implements OnInit {
                 }
               },
               error: (error) => {
-                const errorMessage = error?.error?.message || 'Failed To Fetch Transfer Record';
-                this.snackbar.open(errorMessage, 'close', { duration: 3000 });
+                console.log(error);
+               this.showError('Failed To Fetch Transfer Record');
+               
               }
             });
           }
@@ -91,32 +97,34 @@ export class AccountComponent implements OnInit {
       },
       error: (error) => {
         console.error(error);
-        this.showError('Failed to fetch account');
+        this.showError('Failed to fetch accounts');
       }
     });
+ 
   }
 
 
   //fatch all accounts
   getAllAccount() {
-    this.accountService.getAllAccount().subscribe({
+    this.accountService.getAllAccount().pipe(takeUntil(this.destroy$)).subscribe({
       next: (res: { data: Account[] }) => {
-        this.accountList = res.data;
+        this.accountList = res?.data ?? [];
       },
       error: (error) => {
         console.error(error);
-        this.showError('No Account Found...');
       }
     });
   }
+
 
   //crete New account
   addNewAccount() {
     if (this.addAccountForm.invalid) {
       this.addAccountForm.markAllAsTouched();
+      this.showError('All fields are required');
       return;
     }
-    this.accountService.addAccount(this.addAccountForm.value).subscribe({
+    this.accountService.addAccount(this.addAccountForm.value).pipe(takeUntil(this.destroy$)).subscribe({
       next: () => {
         this.snackbar.open('Account Created SuccessFully.!', 'close', { duration: 3000 })
         this.resetForm();
@@ -129,10 +137,17 @@ export class AccountComponent implements OnInit {
     })
   }
 
-
+openConfirmDialog(id: string): void {
+  const dialog= this.dialog.open(ConfirmDialogComponent);
+  dialog.afterClosed().subscribe((data) => {
+    if (data === true) {
+      this.deleteAccount(id);
+    }
+  });
+}
   //delete Accounts
   deleteAccount(id: string) {
-    this.accountService.deleteAccount(id).subscribe({
+    this.accountService.deleteAccount(id).pipe(takeUntil(this.destroy$)).subscribe({
       next: () => {
         this.snackbar.open('Account deleted SuccessFully.!', 'close', { duration: 3000 });
         this.accountList = this.accountList.filter(account => account._id !== id);
@@ -150,6 +165,7 @@ export class AccountComponent implements OnInit {
   amountTransfer() {
     if (this.transactionForm.invalid) {
       this.transactionForm.markAllAsTouched();
+      this.showError('All fields are required');
       return
     }
     const TransferAmountDetails = {
@@ -158,11 +174,12 @@ export class AccountComponent implements OnInit {
     }
 
     if (this.recordId) {
-      this.accountService.updateTransferAmount(TransferAmountDetails).subscribe({
+      this.accountService.updateTransferAmount(TransferAmountDetails).pipe(takeUntil(this.destroy$)).subscribe({
         next: () => {
           this.snackbar.open('Transfer Amount Details Updated SuccessFully.!', 'close', { duration: 3000 });
           this.resetForm();
-          this.router.navigate([], { queryParams: {} })
+          this.router.navigate([], { queryParams: {} });
+          this.getAllAccount();
         },
         error: (error) => {
           console.log(error);
@@ -174,14 +191,15 @@ export class AccountComponent implements OnInit {
     else {
       this.accountService.amountTransfer(this.transactionForm.value).subscribe({
         next: () => {
-          this.snackbar.open('Amount Transfer Success', 'close', { duration: 3000 });
+          this.snackbar.open('Amount Transfered Successfully', 'close', { duration: 3000 });
           this.getAllAccount();
           this.resetForm()
 
         },
         error: (error) => {
           console.log(error);
-          this.showError('Failed Amount Transfer')
+          const errorMessage = error?.error?.message || 'Failed Amount Transfer';
+          this.showError(errorMessage);
         }
       })
 
@@ -198,10 +216,10 @@ export class AccountComponent implements OnInit {
     this.showForm = true;
     this.addAccountForm.patchValue({
       name: account.name,
-      amount: account.amount,
+      amount: account.recordId ? account.recordId.amount : 0,
     });
+    this.recordId = account.recordId?._id;
   }
-
 
   //updated account Created with initial amount
   updateAccount() {
@@ -217,7 +235,7 @@ export class AccountComponent implements OnInit {
     };
     this.accountService.updateAccount(accountUpdateDetails).subscribe({
       next: () => {
-        this.snackbar.open('Account or Transaction updated successfully', 'Close', { duration: 3000 });
+        this.snackbar.open('Account updated successfully', 'Close', { duration: 3000 });
         this.resetForm();
         this.getAllAccount();
       },
@@ -238,8 +256,17 @@ export class AccountComponent implements OnInit {
     this.showForm = !this.showForm
   }
 
-  amountTransferForm() {
-    this.transferForm = !this.transferForm
+ amountTransferForm(): void {
+    this.getAllAccount(); 
+    this.transactionForm.reset();
+    this.transactionForm.patchValue({ fromAccountId: '', toAccountId: '' });
+    this.transferForm = true;
+  }
+
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   closeForm() {
@@ -255,8 +282,11 @@ export class AccountComponent implements OnInit {
     this.selectedAccountId = null;
     this.transactionForm.reset();
     this.transferForm = false;
+    this.accountId = '';
+    this.recordId ='';
 
   }
+  
 
   get form() {
     return this.addAccountForm.controls;

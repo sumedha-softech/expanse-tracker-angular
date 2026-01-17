@@ -9,24 +9,24 @@ import { environment } from '../../environments/environment';
 })
 export class CategoryService {
 
-  private apiUrl = `${environment.apiUrl}/category/`
+  private apiUrl = `${environment.apiUrl}/categories/`
   constructor(private http: HttpClient) { }
 
 
   getAllCategory(): Observable<{data: Category[]}> {
-    return this.http.get<{data:Category[]}>(this.apiUrl + `getAllCategory`)
+    return this.http.get<{data:Category[]}>(this.apiUrl)
   }
 
   addCategory(category: Category): Observable<Category> {
-    return this.http.post<Category>(this.apiUrl + `addCategory`, category)
+    return this.http.post<Category>(this.apiUrl, category)
   }
 
   updateCategory(category: Category) {
-    return this.http.put(this.apiUrl + `updateCategory/${category._id}`, category)
+    return this.http.put(this.apiUrl + `${category._id}`, category)
   }
 
   deleteCategory(id: string): Observable<Category> {
-    return this.http.delete<Category>(this.apiUrl + `deleteCategory/${id}`)
+    return this.http.delete<Category>(this.apiUrl + `${id}`)
   }
 
 }

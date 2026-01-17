@@ -56,7 +56,7 @@
                             (click)="record.isInitialEntry ? editAccountRecord(record): record.isTransfer ? editTransferRecord(record) : editRecord(record)"><i
                                 class="fas fa-edit"></i>
                         </button>
-                        <button class="btn btn-sm btn-outline-danger" (click)="deleteRecord(record._id)"> <i
+                        <button class="btn btn-sm btn-outline-danger" (click)="openConfirmDialog(record._id)"> <i
                                 class="fas fa-trash-alt"></i>
                         </button>
                     </div>
@@ -89,7 +89,7 @@
                             <div class="account-box">
                                 <label>Account</label>
                                 <select formControlName="account">
-                                    <option value="">Select Account</option>
+                                    <option value="" disabled selected>Select Account</option>
                                     <option *ngFor="let account of accountList" [value]="account._id">
                                         {{ account.name }} : {{ account.amount | currency : 'INR' }}
                                     </option>
@@ -101,7 +101,7 @@
                             <div class="category-box">
                                 <label>Category</label>
                                 <select formControlName="category">
-                                    <option value="">Select Category</option>
+                                    <option value="" disabled selected>Select Category</option>
                                     <option *ngFor="let category of filteredCategoryList" [value]="category._id">
                                         {{ category.name }}
                                     </option>
@@ -112,6 +112,9 @@
                             </div>
                         </div>
                         <input type="number" formControlName="amount" placeholder="Amount" class="amount-input" />
+                         <div class="error" *ngIf="form['amount'].invalid && form['amount'].touched">
+                                    <span *ngIf="form['amount'].errors?.['required']">Amount is required</span>
+                                </div>
                         <input type="text" formControlName="addNote" placeholder="Add Note..." class="note-input" />
                         <!-- Date  -->
                         <div class="datetime-container">

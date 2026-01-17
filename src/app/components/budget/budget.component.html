@@ -2,26 +2,28 @@
 <div class="container" [class.blur]="showForm">
     <div class="summary-container">
         <div class="summary-row">
-            <div class="summary-card income">
+            <div class="summary-card income-card">
                 <h4 class="summary-title">Total Income</h4>
-                <p class="summary-value   text-success fw-semibold">{{totalIncome() | currency: 'INR'}}</p>
+                <p class="summary-value text-success fw-semibold">{{ totalIncome() | currency: 'INR' }}</p>
             </div>
-            <div class="summary-card expense">
+
+            <div class="summary-card expense-card">
                 <h4 class="summary-title">Total Expense</h4>
-                <p class="summary-value  text-danger fw-semibold">{{totalExpense() | currency : 'INR'}}</p>
+                <p class="summary-value text-danger fw-semibold">{{ totalExpense() | currency: 'INR' }}</p>
             </div>
-            <div class="summary-card income">
-                <div class="select-date   gap-2">
+
+            <div class="summary-card date-card">
+                <div class="select-date">
                     <button class="btn btn-outline-primary" (click)="previousMonth()"><i
                             class="fas fa-chevron-left"></i></button>
-                    <input type="month" class="form-control" style="max-width: 180px;" [(ngModel)]="selectMonth"
-                        (change)="onMonthChange()" />
+                    <input type="month" class="form-control" [(ngModel)]="selectMonth" (change)="onMonthChange()" />
                     <button class="btn btn-outline-primary" (click)="nextMonth()"><i
                             class="fas fa-chevron-right"></i></button>
                 </div>
             </div>
         </div>
     </div>
+
     <div class="row">
         <div class="col-lg-6 col-md-12 mb-4" *ngIf="filteredBudgetList.length > 0; else noData">
             <h4 class="fw-bold mb-3">Category Wise Budgets List {{selectMonth | date : 'MMM YYYY'}} </h4>
@@ -38,7 +40,7 @@
                     <div class="btns-box">
                         <button class="btn btn-sm btn-outline-primary m-2"
                             (click)="editCategoryBudget(categoryBudget)"><i class="fas fa-edit"></i> </button>
-                        <button class="btn btn-sm btn-outline-danger" (click)="deleteBudget(categoryBudget._id)"> <i
+                        <button class="btn btn-sm btn-outline-danger" (click)="openConfirmDialog(categoryBudget._id)"> <i
                                 class="fas fa-trash-alt"></i></button>
                     </div>
                 </div>
@@ -58,9 +60,10 @@
         <!-- Available Categories -->
         <div class="col-lg-6 col-md-12 mb-4">
             <div *ngIf="getExpenseCategory().length > 0; else noCategory">
-                <h4 class="fw-bold mb-3  mt-3">Available Expense Categories</h4>
+                <h5 class="fw-bold  mt-3">Available Expense Categories</h5>
                 <div class="table-responsive">
-                    <table class="table table-bordered align-middle"  *ngIf="availbleCategoryList.length > 0; else nodata">
+                    <table class="table table-bordered align-middle"
+                        *ngIf="availbleCategoryList.length > 0; else nodata">
                         <thead class="table-light">
                         </thead>
                         <tbody>
@@ -72,15 +75,16 @@
                             </tr>
                         </tbody>
                     </table>
-                       <ng-template #nodata>
-                <div class="alert alert-warning mt-3">No more categories Available .</div>
-            </ng-template>
+                    <ng-template #nodata>
+                        <div class="alert-message">No more categories Available.</div>
+                    </ng-template>  
                 </div>
             </div>
-            <ng-template #noCategory>
-                <div class="alert alert-warning mt-3">No categories found.</div>
-            </ng-template>
+           
         </div>
+         <ng-template #noCategory>
+                <div class="alert-message">No categories found.</div> 
+            </ng-template>
     </div>
 
 

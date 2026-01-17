@@ -1,0 +1,131 @@
+
+.app-toolbar {
+  display: flex;
+  align-items: center;
+  background-color: #23103A;
+  color: white;
+  height: 56px;
+  padding: 0 16px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1100;
+}
+
+.app-name {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin: 0;
+  padding-left: 10px;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 280px;
+  background-color: #212529;
+  height: calc(100vh - 56px);
+  overflow-y: auto;
+  transition: transform 0.3s ease-in-out;
+  position: relative;
+}
+
+.sidebar.d-none {
+  display: none;
+}
+
+/* On mobile, sidebar should be fixed under toolbar */
+@media (max-width: 576px) {
+  .sidebar {
+    width: 150px;
+    position: fixed;
+    top: 56px;
+    left: 0;
+    z-index: 1050;
+    height: calc(100vh - 56px);
+  }
+
+  .sidebar.d-none {
+    transform: translateX(-100%);
+  }
+}
+
+/* Menu Button */
+.menu-toggle {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  margin-right: 10px;
+  display: inline-flex;
+  align-items: center;
+}
+
+
+
+.sidebar-nav {
+  width: 100%;
+  max-width: 280px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  color: white;
+}
+
+.title-container .title {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+/* Responsive sizes */
+@media (max-width: 992px) {
+  .sidebar {
+    width: 220px;
+  }
+
+  .sidebar-nav {
+    max-width: 220px;
+  }
+}
+
+@media (max-width: 676px) {
+  .sidebar {
+    width: 180px;
+  }
+
+  .sidebar-nav {
+    max-width: 180px;
+    padding: 1rem 0.5rem;
+  }
+
+  .title-container .title {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .sidebar {
+    width: 150px;
+    position: fixed;
+    top: 56px; 
+    left: 0;
+    z-index: 1050;
+    
+  }
+ .nav-link{
+    width: 100px;
+ }
+  .sidebar.d-none {
+    transform: translateX(-100%);
+  }
+
+  .sidebar-nav {
+    max-width: 150px;
+    padding-top: 1.5rem;
+  }
+
+  .title-container .title {
+    font-size: 0.95rem;
+  }
+}

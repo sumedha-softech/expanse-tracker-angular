@@ -27,7 +27,6 @@
             "styles": [
               "src/custom-theme.scss",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
-
               "src/styles.css"
             ],
             "scripts": ["node_modules/bootstrap/dist/js/bootstrap.min.js"]
@@ -59,19 +58,19 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "my-angular-app:build:production"
+              "buildTarget": "mymoney-app:build:production"
             },
             "development": {
-              "buildTarget": "my-angular-app:build:development"
+              "buildTarget": "mymoney-app:build:development"
             },
             "pilot": {
-              "buildTarget": "my-angular-app:build:pilot"
+              "buildTarget": "mymoney-app:build:pilot"
             },
             "staging": {
-              "buildTarget": "my-angular-app:build:staging"
+              "buildTarget": "mymoney-app:build:staging"
             },
             "uat": {
-              "buildTarget": "my-angular-app:build:uat"
+              "buildTarget": "mymoney-app:build:uat"
             }
           },
           "defaultConfiguration": "development"

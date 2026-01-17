@@ -10,13 +10,13 @@ import { environment } from "../../environments/environment";
 })
 
 export class LogService {
-   private apiUrl = `${environment.apiUrl}/log/`
+   private apiUrl = `${environment.apiUrl}/logs/`
 
     constructor(private http: HttpClient) {}
 
 
     getAllLogs():Observable<{data: Log[]}> {
-    return this.http.get<{data: Log[]}>(this.apiUrl+ `getAllLogs`);
+    return this.http.get<{data: Log[]}>(this.apiUrl);
     }
 
 }

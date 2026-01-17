@@ -1,4 +1,3 @@
-/* Base Styles */
 .container {
   padding: 1.5rem;
   color: #0B192C;
@@ -16,19 +15,13 @@ h2 {
   pointer-events: none;
 }
 
-/* Button Container */
-.btn-conatiner,
-.btn-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: space-evenly;
-  margin-top: 1rem;
+.card-text button {
+  float: right;
+  margin-left: 5px;
+  justify-content: center;
 }
 
 
-
-/* Card Layout */
 .card {
   border-radius: 10px;
   transition: all 0.3s ease-in-out;
@@ -76,7 +69,7 @@ h2 {
   background-color: #d1ecf1;
   border: 1px solid #bee5eb;
   border-radius: 6px;
-  padding: 20px;
+  padding: 15px;
   margin-top: 30px;
 }
 
@@ -158,10 +151,11 @@ h2 {
 /* Error Messages */
 .error {
   color: red;
-  font-size: 0.85rem;
-  margin-top: -0.5rem;
-  margin-bottom: 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 1rem;
 }
+
 
 /* Form Field Styling */
 .form-label {
@@ -208,6 +202,7 @@ h2 {
   .btn {
     font-size: 0.95rem;
     padding: 0.5rem;
+
   }
 
   .modal-content {
@@ -227,21 +222,33 @@ h2 {
   flex-wrap: wrap;
 }
 
- 
+.button-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.btn-primary {
+  font-size: 16px;
+  border-radius: 6px;
+  min-width: 100px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
 
 @media (max-width: 768px) {
+
   .btn-container,
   .btn-conatiner {
     flex-direction: row;
     flex-wrap: wrap;
-
     gap: 0.75rem;
   }
 
   .btn-container .btn,
   .btn-conatiner .btn {
     width: auto;
-    min-width: 100px;
+    min-width: 50px;
     padding: 4px;
   }
 
@@ -276,7 +283,8 @@ h2 {
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
   }
-   .card-row {
+
+  .card-row {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
@@ -320,6 +328,9 @@ h2 {
 
   .card-body {
     padding: 0.8rem;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+
   }
 
 
@@ -395,7 +406,6 @@ h2 {
   }
 }
 
-/* Flex fix for button section */
 .btn-container {
   display: flex;
   flex-direction: row;
@@ -403,3 +413,38 @@ h2 {
   flex-wrap: wrap;
 }
 
+
+/* Base btn-container style */
+.btn-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-evenly;
+  margin-top: 1rem;
+}
+
+@media (min-width: 769px) {
+  .btn-container {
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .btn-container {
+
+    align-items: flex-end;
+    justify-content: flex-end;
+    gap: 2rem;
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+
+  .btn-container .btn {
+    width: auto;
+    font-size: 0.9rem;
+    padding: 0.4rem;
+
+  }
+}

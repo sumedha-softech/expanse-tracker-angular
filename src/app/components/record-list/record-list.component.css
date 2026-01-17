@@ -517,6 +517,7 @@ input.mat-input-element {
 }
 
 .alert-message {
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -527,10 +528,52 @@ input.mat-input-element {
   background-color: #d1ecf1;
   border: 1px solid #bee5eb;
   border-radius: 6px;
-  padding: 20px;
+  padding: 15px;
   margin-top: 30px;
 }
 
+::ng-deep .mat-datepicker-content {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 1000 !important;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+}
+
+.time-field {
+  display: flex;
+  flex-direction: column;
+  margin: 8px 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.time-field label {
+  font-size: 14px;
+  margin-bottom: 4px;
+  color: #555;
+}
+
+.time-field input[type="time"] {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+  font-size: 14px;
+  color: #333;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.time-field input[type="time"]:hover {
+  border-color: #888;
+}
+
+.time-field input[type="time"]:focus {
+  border-color: #3f51b5;
+  box-shadow: 0 0 0 2px rgba(63, 81, 181, 0.2);
+}
 
 /* Animation */
 @keyframes fadeIn {
@@ -567,6 +610,10 @@ input.mat-input-element {
     max-width: 100px;
 }
 
+  .time-field input[type="time"] {
+    font-size: 16px;
+    padding: 10px;
+  }
 
   .account-category-box {
     flex-direction: column;

@@ -1,6 +1,51 @@
-<div class="d-flex">
- <app-sidebar></app-sidebar>
+<mat-toolbar class="app-toolbar fixed-top">
+  <button class="menu-toggle" type="button" (click)="toggleSidebar()">
+    <i class="fa-solid fa-bars"></i>
+  </button>
+  <h1 class="app-name">Expense Tracker</h1>
+</mat-toolbar>
+
+<div class="d-flex" style="margin-top: 56px;">
+  <div [ngClass]="{'sidebar': true, 'd-none': !isSidebarVisible, 'd-md-block': true}">
+    <nav class="sidebar-nav">
+      <div class="title-container d-flex align-items-center mt-2">
+        <img
+          src="https://e7.pngegg.com/pngimages/112/789/png-clipart-personal-finance-expense-budget-mint-com-android-trademark-personal-finance-thumbnail.png"
+          alt="User" width="32" height="32" class="rounded-circle me-2" />
+        <span class="title">Dashboard</span>
+      </div>
+      <hr />
+       <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+          <a routerLink="/record-list" routerLinkActive="active" class="nav-link text-white">
+            <i class="bi bi-house-door-fill me-2"></i>Home</a>
+        </li>
+        <li>
+          <a routerLink="/account" routerLinkActive="active" class="nav-link text-white">
+            <i class="bi bi-wallet-fill me-2"></i>Account</a>
+        </li>
+        <li>
+          <a routerLink="/category" routerLinkActive="active" class="nav-link text-white">
+            <i class="bi bi-grid-fill me-2"></i>Category</a>
+        </li>
+        <li>
+          <a routerLink="/budget" routerLinkActive="active" class="nav-link text-white">
+            <i class="bi bi-grid-fill me-2"></i>Budget</a>
+        </li>
+        <li>
+          <a routerLink="/analysis" routerLinkActive="active" class="nav-link text-white">
+            <i class="bi bi-people-fill me-2"></i>Analysis</a>
+        </li>
+        <li>
+          <a routerLink="/log-activity" routerLinkActive="active" class="nav-link text-white">
+            <i class="bi bi-people-fill me-2"></i>Logs</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+
   <div class="p-2 w-100">
- <router-outlet></router-outlet>
+    <router-outlet></router-outlet>
   </div>
 </div>

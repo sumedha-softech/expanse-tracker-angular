@@ -1,8 +1,9 @@
 import { LogService } from './../../services/log.service';
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, } from '@angular/core';
+import { Component, OnDestroy, OnInit, } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar'
 import { Log } from '../../models/log.model';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-log-activity',
@@ -10,7 +11,7 @@ import { Log } from '../../models/log.model';
   templateUrl: './log-activity.component.html',
   styleUrl: './log-activity.component.css'
 })
-export class LogActivityComponent implements OnInit {
+export class LogActivityComponent implements OnInit, OnDestroy {
   logList: Log[] = [];
 
   constructor(private logService: LogService, private snackbar: MatSnackBar) { }
@@ -18,24 +19,22 @@ export class LogActivityComponent implements OnInit {
     this.getAllLogs()
     this.groupedLogsByDate()
   }
+  private destroy$ = new Subject<void>();
 
 
-  //fatch all logs 
   getAllLogs() {
-    this.logService.getAllLogs().subscribe({
+    this.logService.getAllLogs().pipe(takeUntil(this.destroy$)).subscribe({
       next: (res: { data: Log[] }) => {
-        this.logList = res.data;
+        this.logList = res?.data?? [];
         this.filteredLoglist = [...this.logList],
           this.groupedLogsByDate();
       },
       error: (err) => {
         console.error('Failed to fetch logs:', err);
-        const errorMessage = err?.error?.messgae || 'logs not Found..'
-        this.snackbar.open(errorMessage, 'close', { duration: 2000 })
+        this.snackbar.open('logs not Found', 'close', { duration: 2000 })
       }
     });
   }
-
   filteredLoglist: Log[] = []
   groupedLogs: { [key: string]: Log[] } = {};
   groupedDates: string[] = [];
@@ -49,16 +48,14 @@ export class LogActivityComponent implements OnInit {
       }
       this.groupedLogs[dateKey].push(log);
     });
-
-    for (const dateKey in this.groupedLogs) {
-      this.groupedLogs[dateKey].sort((x, y) => {
-        return new Date(y.date).getTime() - new Date(x.date).getTime();
-      });
-    }
-    // Sort dates descending
     this.groupedDates = Object.keys(this.groupedLogs).sort((a, b) => {
       return new Date(b).getTime() - new Date(a).getTime();
     });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
 

@@ -1,54 +1,72 @@
-<div class="container" [class.blur]="showForm">
-  <h1>Categories</h1> <button class="toggleForm-btn" (click)="toggleForm()">Add New</button>
-  <div class="category-columns" *ngIf="getIncomeCategory().length || getExpenseCategory().length; else noCategory">
-    <div class="table-wrapper" *ngIf="getIncomeCategory().length > 0">
-      <h2>Income</h2>
-      <table class="category-table">
-        <thead>
-          <tr>
-            <th>Categories</th>
-          </tr>
-        </thead>
-        <tbody >
-          <tr *ngFor="let category of getIncomeCategory()">
-            <td>{{ category.name }}
-              <div class="btn-conatiner">
-                <button class="btn btn-sm btn-outline-primary me-2 " (click)="editCategoryById(category)"><i
-                    class="fas fa-edit"></i></button>
-                <button class="btn btn-sm btn-outline-danger" (click)="deleteCategory(category._id)"><i
-                    class="fas fa-trash"></i></button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+<div class="category-container" [class.blur]="showForm">
+  <div class="header">
+    <h1 class="main-title">Category Section</h1>
+    <button class="add-category-btn" (click)="toggleForm()">+ Add New</button>
+  </div>
+  
+  <ng-container *ngIf="getIncomeCategory().length || getExpenseCategory().length; else noCategory">
+    <!-- Income Section -->
+    <div class="category-section">
+      <h2 class="category-title income-title">Income Categories</h2>
 
-    <!-- Expense Categories -->
-    <div class="table-wrapper" *ngIf="getExpenseCategory().length > 0">
-      <h2>Expense</h2>
-      <table class="category-table">
-        <thead>
-          <tr>
-            <th>Categories</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let category of getExpenseCategory()">
-            <td>{{ category.name }}
-              <div class="btn-conatiner">
-                <button class="btn btn-sm btn-outline-primary me-2" (click)="editCategoryById(category)"><i
-                    class="fas fa-edit"></i></button>
-                <button class="btn btn-sm btn-outline-danger" (click)="deleteCategory(category._id)"><i
-                    class="fas fa-trash"></i></button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <ng-container *ngIf="getIncomeCategory().length > 0; else noIncome">
+        <div class="responsive-table">
+          <table class="category-table">
+            <tbody>
+              <tr *ngFor="let category of getIncomeCategory()">
+                <td class="category-row">
+                  <span>{{ category.name }}</span>
+                  <div class="action-buttons">
+                    <button class="btn btn-sm btn-outline-primary" (click)="editCategoryById(category)">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger" (click)="openConfirmDialog(category._id)">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </ng-container>
+      <ng-template #noIncome>
+        <div class="alert-message">No Income Categories Available.</div>
+      </ng-template>
     </div>
-  </div> <ng-template #noCategory>
-    <div class="alert-message">No Category found.</div>
+    <!-- Expense Section -->
+    <div class="category-section">
+      <h2 class="category-title expense-title">Expense Categories</h2>
+      <ng-container *ngIf="getExpenseCategory().length > 0; else noExpense">
+        <div class="responsive-table">
+          <table class="category-table">
+            <tbody>
+              <tr *ngFor="let category of getExpenseCategory()">
+                <td class="category-row">
+                  <span>{{ category.name }}</span>
+                  <div class="action-buttons">
+                    <button class="btn btn-sm btn-outline-primary" (click)="editCategoryById(category)">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger" (click)="openConfirmDialog(category._id)">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </ng-container>
+      <ng-template #noExpense>
+        <div class="alert-message">No Expense Categories Available.</div>
+      </ng-template>
+    </div>
+  </ng-container>
+
+  <!-- If both income and expense categories are empty -->
+  <ng-template #noCategory>
+    <div class="alert-message">Categories not Available.</div>
   </ng-template>
 </div>
 
